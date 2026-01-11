@@ -3,13 +3,21 @@ import { useContacts } from '../../context/ContactsContext'
 import { Form } from './styles'
 
 const ContactForm = () => {
-  const { name, email, setName, setEmail, addContact } = useContacts()
+  const {
+    name,
+    email,
+    setName,
+    setEmail,
+    addContact,
+    updateContact,
+    editingContact
+  } = useContacts()
 
   return (
     <Form
       onSubmit={(e) => {
         e.preventDefault()
-        addContact()
+        editingContact ? updateContact() : addContact()
       }}
     >
       <input
@@ -24,7 +32,7 @@ const ContactForm = () => {
         value={email}
         onChange={(e) => setEmail(e.target.value)}
       />
-      <button type="submit">Adicionar</button>
+      <button type="submit">{editingContact ? 'Editar' : 'Adicionar'}</button>
     </Form>
   )
 }
