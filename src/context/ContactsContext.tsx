@@ -1,4 +1,4 @@
-import { createContext, useContext, useState } from 'react'
+import { createContext, useContext, useEffect, useState } from 'react'
 
 import { Contact } from '../types/Contact'
 
@@ -25,7 +25,10 @@ export const ContactsProvider = ({
 }: {
   children: React.ReactNode
 }) => {
-  const [contacts, setContacts] = useState<Contact[]>([])
+  const [contacts, setContacts] = useState<Contact[]>(() => {
+    const stored = localStorage.getItem('contacts')
+    return stored ? JSON.parse(stored) : []
+  })
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [editingContact, setEditingContact] = useState<Contact | null>(null)
@@ -43,6 +46,10 @@ export const ContactsProvider = ({
     setName('')
     setEmail('')
   }
+
+  useEffect(() => {
+    localStorage.setItem('contacts', JSON.stringify(contacts))
+  }, [contacts])
 
   const removeContact = (id: number) => {
     setContacts((prev) => prev.filter((contact) => contact.id !== id))
