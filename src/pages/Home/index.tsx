@@ -4,7 +4,7 @@ import Header from '../../components/Header'
 import ContactCard from '../../components/ContactCard'
 import ContactForm from '../../components/ContactForm'
 
-import { ContainerHome } from './styles'
+import * as S from './styles'
 
 const Home = () => {
   const { contacts } = useContacts()
@@ -16,12 +16,18 @@ const Home = () => {
   return (
     <>
       <Header />
-      <ContainerHome>
+      <S.ContainerHome>
         <ContactForm />
         {orderedContacts.map((contact) => (
           <ContactCard key={contact.id} contact={contact} />
         ))}
-      </ContainerHome>
+        {orderedContacts.length === 0 && (
+          <S.EmptyMessage>
+            Sua lista de contato está vazia, adicione algum contato acima no
+            formulário.
+          </S.EmptyMessage>
+        )}
+      </S.ContainerHome>
     </>
   )
 }

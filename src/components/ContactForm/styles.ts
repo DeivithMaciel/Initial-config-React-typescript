@@ -16,5 +16,10 @@ export const Form = styled.form`
     color: #fff;
     border: none;
     cursor: pointer;
+    border-radius: 8px;
+
+    &:hover {
+      opacity: 0.9;
+    }
   }
 `

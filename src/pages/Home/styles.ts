@@ -8,3 +8,12 @@ export const ContainerHome = styled.main`
   flex-direction: column;
   gap: 16px;
 `
+
+export const EmptyMessage = styled.p`
+  display: flex;
+  text-align: center;
+  width: 100%;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 24px;
+`

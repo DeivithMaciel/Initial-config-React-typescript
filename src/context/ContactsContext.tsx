@@ -14,7 +14,9 @@ type ContactsContextType = {
   editingContact: Contact | null
   startEdit: (contact: Contact) => void
   updateContact: () => void
+  message: string
 }
+const API_URL = 'http://localhost:3001/contacts'
 
 const ContactsContext = createContext<ContactsContextType>(
   {} as ContactsContextType
@@ -32,27 +34,58 @@ export const ContactsProvider = ({
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [editingContact, setEditingContact] = useState<Contact | null>(null)
-
-  const addContact = () => {
-    if (!name || !email) return
-    const newContact: Contact = {
-      id: Date.now(),
-      name,
-      email,
-      isFavorite: false
-    }
-
-    setContacts((prev) => [...prev, newContact])
-    setName('')
-    setEmail('')
-  }
+  const [message, setMessage] = useState('')
 
   useEffect(() => {
     localStorage.setItem('contacts', JSON.stringify(contacts))
   }, [contacts])
 
-  const removeContact = (id: number) => {
+  useEffect(() => {
+    fetch(API_URL)
+      .then((res) => res.json())
+      .then((data) => setContacts(data))
+  })
+
+  useEffect(() => {
+    if (!message) return
+
+    const timer = setTimeout(() => {
+      setMessage('')
+
+      return () => clearTimeout(timer)
+    }, 3000)
+  })
+
+  const addContact = async () => {
+    if (!name || !email) return
+    const newContact = {
+      name,
+      email,
+      isFavorite: false
+    }
+
+    const response = await fetch(API_URL, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(newContact)
+    })
+
+    const savedContact = await response.json()
+
+    setContacts((prev) => [...prev, savedContact])
+    setName('')
+    setEmail('')
+    setMessage('Um contato foi adicionado')
+  }
+
+  const removeContact = async (id: number) => {
+    await fetch(`${API_URL}/${id}`, {
+      method: 'DELETE'
+    })
     setContacts((prev) => prev.filter((contact) => contact.id !== id))
+    setMessage('O contato foi removido')
   }
 
   const startEdit = (contact: Contact) => {
@@ -71,16 +104,25 @@ export const ContactsProvider = ({
     setEditingContact(null)
     setName('')
     setEmail('')
+    setMessage('O contato foi editado')
   }
 
-  const toggleFavorite = (id: number) => {
-    setContacts((prev) =>
-      prev.map((contact) =>
-        contact.id === id
-          ? { ...contact, isFavorite: !contact.isFavorite }
-          : contact
-      )
-    )
+  const toggleFavorite = async (id: number) => {
+    const contact = contacts.find((c) => c.id === id)
+    if (!contact) return
+
+    const response = await fetch(`${API_URL}/${id}`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        isFavorite: !contact.isFavorite
+      })
+    })
+    const updateContact = await response.json()
+
+    setContacts((prev) => prev.map((c) => (c.id === id ? updateContact : c)))
   }
 
   return (
@@ -96,7 +138,8 @@ export const ContactsProvider = ({
         startEdit,
         updateContact,
         removeContact,
-        toggleFavorite
+        toggleFavorite,
+        message
       }}
     >
       {children}

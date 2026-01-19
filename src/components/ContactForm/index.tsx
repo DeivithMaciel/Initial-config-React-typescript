@@ -14,26 +14,28 @@ const ContactForm = () => {
   } = useContacts()
 
   return (
-    <Form
-      onSubmit={(e) => {
-        e.preventDefault()
-        editingContact ? updateContact() : addContact()
-      }}
-    >
-      <input
-        type="text"
-        placeholder="nome"
-        value={name}
-        onChange={(e) => setName(e.target.value)}
-      />
-      <input
-        type="text"
-        placeholder="email"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-      />
-      <button type="submit">{editingContact ? 'Editar' : 'Adicionar'}</button>
-    </Form>
+    <>
+      <Form
+        onSubmit={(e) => {
+          e.preventDefault()
+          editingContact ? updateContact() : addContact()
+        }}
+      >
+        <input
+          type="text"
+          placeholder="nome"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+        />
+        <input
+          type="text"
+          placeholder="email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+        />
+        <button type="submit">{editingContact ? 'Editar' : 'Adicionar'}</button>
+      </Form>
+    </>
   )
 }
 
