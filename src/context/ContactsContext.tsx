@@ -17,7 +17,7 @@ type ContactsContextType = {
   message: string
   loading: boolean
 }
-const API_URL = 'http://localhost:3001/contacts'
+const API_URL = 'https://json-server-listadecontatoscrud.onrender.com/contacts'
 
 const ContactsContext = createContext<ContactsContextType>(
   {} as ContactsContextType
@@ -50,10 +50,10 @@ export const ContactsProvider = ({
 
     const timer = setTimeout(() => {
       setMessage('')
-
-      return () => clearTimeout(timer)
     }, 3000)
-  })
+
+    return () => clearTimeout(timer)
+  }, [message])
 
   const addContact = async () => {
     if (!name || !email) return
@@ -92,7 +92,7 @@ export const ContactsProvider = ({
 
   const removeContact = async (id: number) => {
     try {
-      loading
+      setLoading(true)
 
       await fetch(`${API_URL}/${id}`, {
         method: 'DELETE'
