@@ -7,11 +7,15 @@ import ContactForm from '../../components/ContactForm'
 import * as S from './styles'
 
 const Home = () => {
-  const { contacts } = useContacts()
+  const { contacts, loading } = useContacts()
 
   const orderedContacts = [...contacts].sort(
     (a, b) => Number(b.isFavorite) - Number(a.isFavorite)
   )
+
+  if (loading) {
+    return <p>Carregando contatos...</p>
+  }
 
   return (
     <>

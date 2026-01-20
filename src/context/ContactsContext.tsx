@@ -15,6 +15,7 @@ type ContactsContextType = {
   startEdit: (contact: Contact) => void
   updateContact: () => void
   message: string
+  loading: boolean
 }
 const API_URL = 'http://localhost:3001/contacts'
 
@@ -27,24 +28,22 @@ export const ContactsProvider = ({
 }: {
   children: React.ReactNode
 }) => {
-  const [contacts, setContacts] = useState<Contact[]>(() => {
-    const stored = localStorage.getItem('contacts')
-    return stored ? JSON.parse(stored) : []
-  })
+  const [contacts, setContacts] = useState<Contact[]>([])
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [editingContact, setEditingContact] = useState<Contact | null>(null)
   const [message, setMessage] = useState('')
+  const [loading, setLoading] = useState(false)
 
   useEffect(() => {
-    localStorage.setItem('contacts', JSON.stringify(contacts))
-  }, [contacts])
+    setLoading(true)
 
-  useEffect(() => {
     fetch(API_URL)
       .then((res) => res.json())
       .then((data) => setContacts(data))
-  })
+      .catch(() => setMessage('Erro ao carregar contatos'))
+      .finally(() => setLoading(false))
+  }, [])
 
   useEffect(() => {
     if (!message) return
@@ -58,34 +57,55 @@ export const ContactsProvider = ({
 
   const addContact = async () => {
     if (!name || !email) return
-    const newContact = {
-      name,
-      email,
-      isFavorite: false
+
+    try {
+      setLoading(true)
+
+      const response = await fetch(API_URL, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          name,
+          email,
+          isFavorite: false
+        })
+      })
+
+      if (!response.ok) {
+        throw new Error('Erro ao adicionar contato')
+      }
+
+      const savedContact = await response.json()
+
+      setContacts((prev) => [...prev, savedContact])
+      setName('')
+      setEmail('')
+      setMessage('Um contato foi adicionado')
+    } catch (error) {
+      setMessage('Erro ao adicionar contato')
+    } finally {
+      setLoading(false)
     }
-
-    const response = await fetch(API_URL, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(newContact)
-    })
-
-    const savedContact = await response.json()
-
-    setContacts((prev) => [...prev, savedContact])
-    setName('')
-    setEmail('')
-    setMessage('Um contato foi adicionado')
   }
 
   const removeContact = async (id: number) => {
-    await fetch(`${API_URL}/${id}`, {
-      method: 'DELETE'
-    })
-    setContacts((prev) => prev.filter((contact) => contact.id !== id))
-    setMessage('O contato foi removido')
+    try {
+      loading
+
+      await fetch(`${API_URL}/${id}`, {
+        method: 'DELETE'
+      })
+
+      setContacts((prev) => prev.filter((contact) => contact.id !== id))
+
+      setMessage('O contato foi removido')
+    } catch {
+      setMessage('Erro ao remover contato')
+    } finally {
+      setLoading(false)
+    }
   }
 
   const startEdit = (contact: Contact) => {
@@ -139,7 +159,8 @@ export const ContactsProvider = ({
         updateContact,
         removeContact,
         toggleFavorite,
-        message
+        message,
+        loading
       }}
     >
       {children}
