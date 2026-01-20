@@ -17,3 +17,12 @@ export const EmptyMessage = styled.p`
   font-weight: bold;
   font-size: 24px;
 `
+
+export const LoadingMessage = styled.p`
+  font-weight: bold;
+  display: flex;
+  text-align: center;
+  justify-content: center;
+  font-size: 18px;
+  padding-top: 48px;
+`

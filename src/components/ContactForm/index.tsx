@@ -10,7 +10,8 @@ const ContactForm = () => {
     setEmail,
     addContact,
     updateContact,
-    editingContact
+    editingContact,
+    loading
   } = useContacts()
 
   return (
@@ -33,7 +34,9 @@ const ContactForm = () => {
           value={email}
           onChange={(e) => setEmail(e.target.value)}
         />
-        <button type="submit">{editingContact ? 'Editar' : 'Adicionar'}</button>
+        <button type="submit" disabled={loading}>
+          {loading ? 'Salvando...' : editingContact ? 'Editar' : 'Adicionar'}
+        </button>
       </Form>
     </>
   )

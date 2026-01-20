@@ -114,17 +114,45 @@ export const ContactsProvider = ({
     setEmail(contact.email)
   }
 
-  const updateContact = () => {
+  const updateContact = async () => {
     if (!editingContact) return
-    setContacts((prev) =>
-      prev.map((contact) =>
-        contact.id === editingContact.id ? { ...contact, name, email } : contact
+
+    try {
+      setLoading(true)
+
+      const response = await fetch(`${API_URL}/${editingContact.id}`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          ...editingContact,
+          name,
+          email
+        })
+      })
+
+      if (!response.ok) {
+        throw new Error('Erro ao atualizar o contato')
+      }
+
+      const updateContact = await response.json()
+
+      setContacts((prev) =>
+        prev.map((contact) =>
+          contact.id === updateContact.id ? updateContact : contact
+        )
       )
-    )
-    setEditingContact(null)
-    setName('')
-    setEmail('')
-    setMessage('O contato foi editado')
+
+      setEditingContact(null)
+      setName('')
+      setEmail('')
+      setMessage('Contato atualizado')
+    } catch {
+      setMessage('Erro ao editar o contato')
+    } finally {
+      setLoading(false)
+    }
   }
 
   const toggleFavorite = async (id: number) => {

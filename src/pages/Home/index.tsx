@@ -13,25 +13,25 @@ const Home = () => {
     (a, b) => Number(b.isFavorite) - Number(a.isFavorite)
   )
 
-  if (loading) {
-    return <p>Carregando contatos...</p>
-  }
-
   return (
     <>
       <Header />
-      <S.ContainerHome>
-        <ContactForm />
-        {orderedContacts.map((contact) => (
-          <ContactCard key={contact.id} contact={contact} />
-        ))}
-        {orderedContacts.length === 0 && (
-          <S.EmptyMessage>
-            Sua lista de contato está vazia, adicione algum contato acima no
-            formulário.
-          </S.EmptyMessage>
-        )}
-      </S.ContainerHome>
+      {loading ? (
+        <S.LoadingMessage>Está carregando....</S.LoadingMessage>
+      ) : (
+        <S.ContainerHome>
+          <ContactForm />
+          {orderedContacts.map((contact) => (
+            <ContactCard key={contact.id} contact={contact} />
+          ))}
+          {orderedContacts.length === 0 && (
+            <S.EmptyMessage>
+              Sua lista de contato está vazia, adicione algum contato acima no
+              formulário.
+            </S.EmptyMessage>
+          )}
+        </S.ContainerHome>
+      )}
     </>
   )
 }
