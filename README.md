@@ -1,78 +1,16 @@
-🚀 Sobre o projeto
-Este projeto foi desenvolvido com foco em conversão de clientes, utilizando uma interface moderna, responsiva e visualmente atrativa.
+# Initial configs React
 
-A página apresenta os serviços de forma clara e direciona o usuário para contato direto via WhatsApp ou Instagram.
+Este repositório contém uma estrutura inicial para projetos em **React** (TypeScript), configurada com as melhores práticas de padronização de código, formatação e estilo.
 
-🧩 Funcionalidades
-🛍️ Serviços
-Exibição dos produtos personalizados
-Layout alternado (desktop) para melhor leitura
-Carrossel otimizado para mobile
-Animações com Framer Motion
-⚙️ Como funciona
-Explicação do processo de atendimento:
+O projeto teve seu início estruturado durante uma das aulas do curso da **EBAC (Escola Britânica de Artes Criativas e Tecnologia)** e, posteriormente, foi expandido, personalizado e continuado por mim para atender a requisitos mais robustos de desenvolvimento.
 
-Contato
-Criação
-Orçamento
-Produção e entrega
-📱 Responsividade
-Totalmente adaptado para:
+## 🛠️ Tecnologias e Ferramentas Incluídas
 
-Desktop
-Tablet
-Mobile
-🎨 Interface
-Gradientes contínuos entre seções
-Design leve, moderno e chamativo
-Cards com destaque visual
-📞 Contato
-Integração direta com:
+- **React & TypeScript**: Base do ecossistema do projeto.
+- **ESLint**: Linter para identificar, reportar e fixar padrões incorretos ou bugs potenciais no código JavaScript/TypeScript.
+- **Prettier**: Formatador de código opinativo que garante consistência visual (aspas, ponto e vírgula, espaçamento) em todo o projeto.
+- **.editorconfig**: Mantém estilos de codificação consistentes entre diferentes editores e IDEs (como tamanho de tabulação e finais de linha).
 
-WhatsApp
-Instagram
-🍔 Navegação
-Menu hamburguer no mobile
-Header dinâmico (aparece/desaparece no scroll)
-Fechamento automático do menu ao rolar a página
-🛠️ Tecnologias utilizadas
-React
-TypeScript
-Styled-components
-Framer Motion
-Lucide React
-Vite
-📦 Instalação e execução
-git clone https://github.com/DeivithMaciel/site_criativo_okumura.git
-npm install
-npm run dev
-📁 Estrutura do projeto
-src/
-  components/
-    Header/
-    Products/
-    Works/
-    Contact/
-    Footer/
-    Hero/
-    Toast/
-  services/
-    Product.ts
-  Pages/
-    Home/
-  styles/
-    GlobalStyles.ts
-  assets/
-    images/
-💼 Objetivo
-Este projeto foi desenvolvido para uso real em um negócio de personalizados, com foco em:
+## 🚀 Uso Livre
 
-Apresentação profissional dos serviços
-Geração de leads
-Facilidade de contato
-Experiência do usuário otimizada
-🔒 Licença
-Este projeto é de uso comercial e foi desenvolvido sob demanda. Não é permitido reutilizar, redistribuir ou comercializar este código sem autorização.
-
-👨‍💻 Desenvolvimento
-Desenvolvido como parte de portfólio profissional focado em criação de landing pages modernas e de alta conversão.
+Este repositório é de **uso livre** para a comunidade. Sinta-se à vontade para clonar, modificar, utilizar como *boilerplate* para os seus próprios projetos ou estudar as configurações integradas.
